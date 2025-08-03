@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Video Page</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    video {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <video
+    id="promoVideo"
+    src="https://hiran-shalika.github.io/Video-Host/video.mp4"
+    autoplay
+    muted
+    playsinline
+  ></video>
+
+  <script>
+    const redirectURL = "https://videopagesl.blogspot.com/2025/08/01.html"; // 🔁 Replace with your real redirect link
+    const delayBeforeRedirect = 3000; // 3 seconds
+    const blockDuration = 5 * 60 * 1000; // 5 minutes
+    const storageKey = "lastVisitTime";
+
+    const now = Date.now();
+    const lastVisit = localStorage.getItem(storageKey);
+
+    // If visited in the last 5 minutes, redirect immediately
+    if (lastVisit && now - parseInt(lastVisit) < blockDuration) {
+      window.location.href = redirectURL;
+    } else {
+      // Save current time as last visit
+      localStorage.setItem(storageKey, now.toString());
+
+      const video = document.getElementById("promoVideo");
+
+      // Wait until video is playing to start the redirect timer
+      video.addEventListener("playing", () => {
+        setTimeout(() => {
+          window.location.href = redirectURL;
+        }, delayBeforeRedirect);
+      });
+
+      // Force video to play in case autoplay fails silently
+      video.play().catch((err) => {
+        console.warn("Autoplay failed:", err);
+      });
+    }
+  </script>
+</body>
+</html>
